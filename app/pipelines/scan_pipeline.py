@@ -1,43 +1,24 @@
-from concurrent.futures import ThreadPoolExecutor
+from app.data.universe_providers.gainer_provider import fetch_top_sector_performers 
 
-from app.data.universe_provider import load_universe
-from app.pipelines.stock_pipeline import run_stock_pipeline
-from app.scoring.opportunity_scorer import score_opportunity
+def run_market_scan(limit_per_sector=3, total_limit=15):
 
-
-def process_stock(symbol):
-
-    result = run_stock_pipeline(symbol)
-
-    if "error" in result:
-        return None
-
-    score = score_opportunity(result)
-
-    return {
-        "symbol": symbol,
-        "score": score,
-        "summary": result["summary"]
-    }
-
-
-def run_market_scan():
-
-    symbols = load_universe()
-
-    opportunities = []
-
-    with ThreadPoolExecutor(max_workers=5) as executor:
-
-        results = executor.map(process_stock, symbols)
-
-    for r in results:
-        if r:
-            opportunities.append(r)
-
-    opportunities.sort(
-        key=lambda x: x["score"],
-        reverse=True
+    top_movers = fetch_top_sector_performers(
+        limit_per_sector=limit_per_sector, 
+        total_top_limit=total_limit
     )
 
-    return opportunities[:5]
+    if not top_movers:
+        print("Market Scan: No data retrieved from NSE.")
+        return []
+
+    opportunities = []
+    for stock in top_movers:
+        opportunities.append({
+            "symbol": stock["symbol"],
+            "sector": stock["sector"],
+            "score": round(stock["perChange"], 2),  # Using % Change as the primary score
+            "last_price": stock["ltp"],
+            "status": "High Momentum"
+        })
+
+    return opportunities
