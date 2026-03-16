@@ -2,6 +2,7 @@ from groq import Groq
 from dotenv import load_dotenv
 import os
 from app.tools.news_tool import fetch_news
+from app.config import llm_model
 
 load_dotenv()
 
@@ -35,7 +36,8 @@ Return:
 """
 
     response = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
+        #model="llama-3.1-8b-instant",
+        model=llm_model,
         messages=[{"role": "user", "content": prompt}]
     )
 
