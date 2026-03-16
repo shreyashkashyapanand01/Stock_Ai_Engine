@@ -1,15 +1,12 @@
 from fastapi import APIRouter
+from app.pipelines.stock_pipeline import run_stock_pipeline
 
 router = APIRouter()
 
-@router.post("/analyze-stock")
-def analyze_stock(data: dict):
 
-    symbol = data.get("symbol")
+@router.get("/analyze-stock/{symbol}")
+def analyze_stock(symbol: str):
 
-    return {
-        "symbol": symbol,
-        "summary": "Dummy analysis working",
-        "risk_level": "low",
-        "confidence": 0.5
-    }
+    result = run_stock_pipeline(symbol)
+
+    return result
