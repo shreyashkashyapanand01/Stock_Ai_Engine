@@ -1,9 +1,8 @@
 import requests
 
-# from app.config import limit_per_sector
-# from app.config import total_top_limit
+from app.config import top_limit, per_sector_limit
 
-def fetch_top_sector_performers(limit_per_sector=3, total_top_limit=15):
+def fetch_top_sector_performers(limit_per_sector=per_sector_limit, total_top_limit=top_limit):
     session = requests.Session()
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",

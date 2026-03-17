@@ -1,6 +1,7 @@
 from app.data.universe_providers.gainer_provider import fetch_top_sector_performers 
+from app.config import top_limit,per_sector_limit
 
-def run_market_scan(limit_per_sector=3, total_limit=15):
+def run_market_scan(limit_per_sector=per_sector_limit, total_limit=top_limit):
 
     top_movers = fetch_top_sector_performers(
         limit_per_sector=limit_per_sector, 
