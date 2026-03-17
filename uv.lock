@@ -860,6 +860,17 @@ wheels = [
 ]
 
 [[package]]
+name = "req"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "six" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/78/9f/afc194e1d4c37d259dfeb2330432611d330fe910699ad860da829f348e86/req-1.0.0-py2.py3-none-any.whl", hash = "sha256:9ee30b71347cef7dba1eb4a0132586b88828d8249cf2f7e606de5ac44810367e", size = 5925, upload-time = "2018-06-06T21:05:02.981Z" },
+]
+
+[[package]]
 name = "requests"
 version = "2.32.5"
 source = { registry = "https://pypi.org/simple" }
@@ -938,7 +949,9 @@ dependencies = [
     { name = "ipykernel" },
     { name = "numpy" },
     { name = "pandas" },
+    { name = "pydantic" },
     { name = "python-dotenv" },
+    { name = "req" },
     { name = "requests" },
     { name = "uvicorn" },
     { name = "yfinance" },
@@ -952,7 +965,9 @@ requires-dist = [
     { name = "ipykernel", specifier = ">=7.2.0" },
     { name = "numpy", specifier = ">=2.4.3" },
     { name = "pandas", specifier = ">=3.0.1" },
+    { name = "pydantic", specifier = ">=2.12.5" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
+    { name = "req", specifier = ">=1.0.0" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "uvicorn", specifier = ">=0.41.0" },
     { name = "yfinance", specifier = ">=1.2.0" },
