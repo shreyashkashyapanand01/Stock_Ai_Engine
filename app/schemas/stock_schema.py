@@ -1,4 +1,6 @@
 from dataclasses import dataclass, field
+from pydantic import BaseModel
+from typing import Dict, Any
 
 
 @dataclass
@@ -13,3 +15,14 @@ class StockAnalysisContext:
     fundamental: dict = field(default_factory=dict)
 
     summary: str = ""
+    
+
+class StockRequest(BaseModel):
+    symbol: str
+
+class StockResponse(BaseModel):
+    symbol: str
+    technical: Dict[str, Any]
+    news: Dict[str, Any]
+    fundamental: Dict[str, Any]
+    summary: str
