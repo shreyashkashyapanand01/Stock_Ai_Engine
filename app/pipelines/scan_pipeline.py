@@ -1,43 +1,22 @@
-# from app.data.universe_providers.gainer_provider import fetch_top_sector_performers 
-# from app.config import top_limit,per_sector_limit
-
-# def run_market_scan(limit_per_sector=per_sector_limit, total_limit=top_limit):
-
-#     top_movers = fetch_top_sector_performers(
-#         limit_per_sector=limit_per_sector, 
-#         total_top_limit=total_limit
-#     )
-
-#     if not top_movers:
-#         print("Market Scan: No data retrieved from NSE.")
-#         return []
-
-#     opportunities = []
-#     for stock in top_movers:
-#         opportunities.append({
-#             "symbol": stock["symbol"],
-#             "sector": stock["sector"],
-#             "score": round(stock["perChange"], 2),  # Using % Change as the primary score
-#             "last_price": stock["ltp"],
-#             "status": "High Momentum"
-#         })
-
-#     return opportunities
-
-
+import logging
 from app.data.universe_providers.gainer_provider import fetch_top_sector_performers
 from app.pipelines.stock_pipeline import run_stock_pipeline
 from app.scoring.opportunity_scorer import score_opportunity
 
+logger = logging.getLogger(__name__)
 
 def run_market_scan():
+    logger.info("scan_pipeline: Started market scan for top performers")
 
-    top_movers = fetch_top_sector_performers()
+    try:
+        top_movers = fetch_top_sector_performers()
+    except Exception:
+        logger.error("Error in scan_pipeline.py at run_market_scan: Failed to fetch top movers from provider")
+        return []
 
     opportunities = []
 
     for stock in top_movers:
-
         symbol = stock["symbol"]
 
         try:
@@ -63,8 +42,10 @@ def run_market_scan():
             })
 
         except Exception:
+            logger.error(f"Error in scan_pipeline.py at run_market_scan: Failed to process analysis for {symbol}")
             continue
 
     opportunities.sort(key=lambda x: x["score"], reverse=True)
 
+    logger.info(f"scan_pipeline: Successfully finished market scan with {len(opportunities)} opportunities found")
     return opportunities
