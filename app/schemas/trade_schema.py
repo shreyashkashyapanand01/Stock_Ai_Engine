@@ -8,8 +8,8 @@ class Trade(BaseModel):
     entry_price: float
     exit_price: float
     quantity: int
-    entry_time: Optional[datetime]
-    exit_time: Optional[datetime]
+    entry_time: Optional[datetime] = None
+    exit_time: Optional[datetime] = None
     type: str
     side: str
     holdingMinutes: float
