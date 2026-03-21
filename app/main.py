@@ -36,7 +36,7 @@ def create_app() -> FastAPI:
     app.include_router(stock_router, prefix="")
     app.include_router(scan_router, prefix="")
     app.include_router(trade_router, prefix="")
-    app.include_router(portfolio_router)
+    app.include_router(portfolio_router, prefix="")
     logger.info("Application routers registered successfully.")
 
     return app
