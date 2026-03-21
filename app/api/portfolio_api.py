@@ -7,7 +7,7 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.post("/portfolio/analyze")
+@router.post("/portfolio-analyze")
 def analyze_portfolio(request: PortfolioAnalysisRequest):
     logger.info("portfolio_api: Received portfolio analysis request")
 
