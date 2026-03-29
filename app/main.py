@@ -14,32 +14,43 @@ setup_logging()
 logger = logging.getLogger(__name__)
 
 def create_app() -> FastAPI:
-
-    logger.info("Initializing AI Trading Coach Engine...")
+    logger.info("main: Initializing AI Trading Coach Engine...")
     
-    app = FastAPI(
-        title="AI Trading Coach Engine",
-        description="AI-powered stock analysis and market scanner",
-        version="1.0.0"
-    )
+    try:
+        app = FastAPI(
+            title="AI Trading Coach Engine",
+            description="AI-powered stock analysis and market scanner",
+            version="1.0.0"
+        )
 
-    #  CORS (important for frontend later)
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],  # later restrict this
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+        #  CORS (important for frontend later)
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],  # later restrict this
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
 
-    #  Register routers
-    app.include_router(stock_router, prefix="")
-    app.include_router(scan_router, prefix="")
-    app.include_router(trade_router, prefix="")
-    app.include_router(portfolio_router, prefix="")
-    logger.info("Application routers registered successfully.")
+        #  Register routers
+        logger.info("main: Registering application routers")
+        app.include_router(stock_router, prefix="")
+        app.include_router(scan_router, prefix="")
+        app.include_router(trade_router, prefix="")
+        app.include_router(portfolio_router, prefix="")
+        
+        logger.info("main: Application routers registered successfully.")
+        
+        @app.get("/")
+        async def root():
+            return {"status": "online", "message": "AI Trading Coach Engine is running"}
 
-    return app
+        logger.info("main: FastAPI application startup complete")
+        return app
+
+    except Exception as e:
+        logger.error(f"Error in main.py at create_app: Application failed to start - {str(e)}")
+        raise e
 
 
 app = create_app()
