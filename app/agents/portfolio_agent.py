@@ -10,6 +10,7 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
 def generate_portfolio_decision(context):
+    logger.info("portfolio_agent: Started generating AI portfolio decision")
     try:
         prompt = f"""
         You are an expert AI Portfolio Advisor.
@@ -60,6 +61,7 @@ def generate_portfolio_decision(context):
         json_str = re.search(r"\{.*\}", content, re.DOTALL).group()
         parsed = json.loads(json_str)
 
+        logger.info("portfolio_agent: Successfully finished AI portfolio decision generation")
         return {
             "analysisId": str(uuid.uuid4()),
             "generatedAt": datetime.utcnow().isoformat(),
