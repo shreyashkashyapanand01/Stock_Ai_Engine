@@ -14,6 +14,7 @@ def get_market_data(symbol: str):
         if history.empty:
             logger.warning(f"market_data_adapter: No history for {symbol}")
 
+        logger.info(f"market_data_adapter: Successfully finished fetching market data for {symbol}")
         return {
             "price": price,
             "history": history
