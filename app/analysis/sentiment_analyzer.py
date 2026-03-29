@@ -6,12 +6,12 @@ from app.config import llm_model
 
 logger = logging.getLogger(__name__)
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-
-
 import json
 import re
 
+
 def safe_parse_llm_json(content: str):
+    logger.info("sentiment_analyzer: Attempting to parse LLM JSON response")
     try:
         # Step 1: extract JSON block
         match = re.search(r"\{.*?\}", content, re.DOTALL)
@@ -45,6 +45,7 @@ def get_news_sentiment(symbol: str):
                 "confidence": 0.5,
                 "headlines": []
             }
+            
         logger.info(f"sentiment_analyzer: news found for {symbol}, doing news sentiment analysys")
 
         prompt = f"""
@@ -72,15 +73,20 @@ def get_news_sentiment(symbol: str):
             temperature=0.2
         )
 
-        content = response.choices[0].message.content.strip()       
+        content = response.choices[0].message.content.strip()  
+             
         # import json
         # #parsed = json.loads(content)
         # import re
         # json_str = re.search(r"\{.*\}", content, re.DOTALL).group()
         # parsed = json.loads(json_str)
+        
         parsed = safe_parse_llm_json(content)
+        
         if not parsed:
             raise ValueError("Invalid LLM JSON response")
+        
+        logger.info(f"sentiment_analyzer: Successfully finished sentiment analysis for {symbol}")
 
         return {
             "sentiment": parsed.get("sentiment", "Neutral"),
