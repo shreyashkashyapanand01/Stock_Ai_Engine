@@ -55,9 +55,9 @@ def get_news_sentiment(symbol: str):
         {headlines}
 
         Strictly Return ONLY in JSON format:
-        Return ONLY valid JSON.
-        Do NOT include any text before or after JSON.
-        Do NOT explain anything.
+        Strictly Return ONLY valid JSON.
+        Strictly Do NOT include any text before or after JSON.
+        Strictly Do NOT explain anything.
         {{
             "sentiment": "Bullish | Bearish | Neutral",
             "confidence": 0 to 1
